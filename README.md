@@ -1,56 +1,23 @@
-ThinkPHP 6.0
+aliyun
 ===============
 
 > 运行环境要求PHP7.1+，兼容PHP8.0。
 
-[官方应用服务市场](https://market.topthink.com) | [`ThinkAPI`——官方统一API服务](https://docs.topthink.com/think-api)
+>thinkphp6.0
+>阿里云的账号
 
-ThinkPHPV6.0版本由[亿速云](https://www.yisu.com/)独家赞助发布。
+## 要改的地方
 
-## 主要新特性
+获取用户的sts信息请参考阿里云 https://help.aliyun.com/document_detail/100624.html 
+* app/controller/Index.php 修改阿里云账号密码信息
+* public/upload.js 修改信息
+* vendor/aliyuncs/sts-server/config.json 修改信息
+以上信息正常上传即可正常上传
 
-* 采用`PHP7`强类型（严格模式）
-* 支持更多的`PSR`规范
-* 原生多应用支持
-* 更强大和易用的查询
-* 全新的事件系统
-* 模型事件和数据库事件统一纳入事件系统
-* 模板引擎分离出核心
-* 内部功能中间件化
-* SESSION/Cookie机制改进
-* 对Swoole以及协程支持改进
-* 对IDE更加友好
-* 统一和精简大量用法
+## 主要文件
+* app/controller/Index.php 的getsts方法,获取sts信息
+* public/upload.js  lib目录上传的一些依赖文件
+* vendor/aliyuncs里面的阿里云依赖文件
 
-## 安装
-
-~~~
-composer create-project topthink/think tp 6.0.*
-~~~
-
-如果需要更新框架使用
-~~~
-composer update topthink/framework
-~~~
-
-## 文档
-
-[完全开发手册](https://www.kancloud.cn/manual/thinkphp6_0/content)
-
-## 参与开发
-
-请参阅 [ThinkPHP 核心框架包](https://github.com/top-think/framework)。
-
-## 版权信息
-
-ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
-
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
-
-版权所有Copyright © 2006-2020 by ThinkPHP (http://thinkphp.cn)
-
-All rights reserved。
-
-ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
-
-更多细节参阅 [LICENSE.txt](LICENSE.txt)
+public/index.html 文件请自行去修改,部分用到了vue.js   
+其中upload.js 175行方法接收到图片后,会在175行调用addimg方法,这个方法大家可以自行进行修改适配

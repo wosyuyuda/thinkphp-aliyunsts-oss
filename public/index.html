@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<title>添加素材</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://wodlayui.oss-cn-beijing.aliyuncs.com/css/layui.css" media="all">
+    <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js" charset="utf-8"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
+    <style>
+        .layui-upload-img { width: 150px; height: 150px; margin: 0; }
+        .pic-more { width:100%; left:0; margin: 10px 0px 0px 0px;}
+        .pic-more li { width:90px; float: left; margin-right: 5px;}
+        .pic-more li .layui-input { display: initial; }
+        .pic-more li a { position: absolute; top: 0; display: block; }
+        .pic-more li a i { font-size: 24px; background-color: #008800; }
+        #slide-pc-priview .item_img img{ width: 90px; height: 90px;}
+        #slide-pc-priview li{position: relative;}
+        #slide-pc-priview li .operate{ color: #000; display: none;}
+        #slide-pc-priview li .toleft{ position: absolute;top: 40px; left: 1px; cursor:pointer;}
+        #slide-pc-priview li .toright{ position: absolute;top: 40px; right: 1px;cursor:pointer;}
+        #slide-pc-priview li .close1{position: absolute;top: 5px; right: 5px;cursor:pointer;}
+        #slide-pc-priview li .operate{ display: block;}
+    </style>
+</head>
+<body style='padding-top:20px'>
+<div id='app'>
+<h2></h2>
+
+          <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">图片</label>
+    <div class="layui-input-block">
+    
+	   <div class="pic-more"  v-if="arcdata.vedio ==0||arcdata.vedio==false">
+                         <ul class="pic-more-upload-list" id="slide-pc-priview">
+							<li class="item_img"  v-for="(item,index) in arcdata.images" >
+							<div class="operate">
+					<i style="background: #000000;color:#ffffff;" class="toleft layui-icon" @click='transfer(index,index-1)'></i>
+					<i style="background: #000000;color:#ffffff;" class="toright layui-icon" @click='transfer(index,index+1)'></i>
+					<i style="background: #000000;color:#ffffff;" class="close1 layui-icon"  @click='delpic(index)'></i>
+							</div><img :src="item+'?x-oss-process=image/resize,m_fixed,w_150,h_150/quality,q_90'" class="img"  @click="photos(index)"  :layer-src="item" >
+							</li>
+							
+                        </ul>
+                    </div>
+    </div>
+  </div>
+
+  
+
+
+ 
+</div>
+
+<div id="ossfile">你的浏览器不支持flash,Silverlight或者HTML5！</div>
+
+<div id="container">
+	<a id="selectfiles" href="javascript:void(0);"  class="layui-btn layui-btn-warm">选择文件</a>
+<div style="display: none;">
+    <a id="postfiles" href="javascript:void(0);"  class="layui-btn layui-btn-warm">
+        开始上传</a>
+    </div>
+</div>
+<pre id="console"></pre>
+
+
+</body>
+<script>
+
+
+ new Vue({
+        el: "#app",
+        data() {
+            return {
+				isv:false,
+				type:1,
+				arcdata:{
+					body:'',
+					images:[],//图集
+					good_pic:'',//商品图片
+					good_title:'',//标题
+					good_price:'',//价格
+					goods_commission:'',//佣金
+					type:1,
+					goods_url:'',
+					tuijian:0,
+					vedio:0,
+					vedio_url:'',
+					renqun:0,
+					tishi:'',
+					level:0,//排序
+				},
+				types:[],
+				renqun:[],
+				tjid:0,
+				low_type:0
+            }
+        }, 
+        methods: {
+			//点击上传图片或者视频
+			star(){
+				//document.getElementById("postfiles").click();
+			},
+			//开始选择图片或者视频
+			sc(){
+				document.getElementById("selectfiles").click();
+			},
+			//删除图片
+			delpic(wz){
+				this.arcdata.images.splice(wz, 1);
+			},
+			//移动图片
+			transfer(id,i){
+				console.log(id,i);
+				this.arcdata.images[id]=this.arcdata.images.splice(i, 1, this.arcdata.images[id])[0];
+			},
+	
+			//添加图片或者视频
+			addimg(url){
+                //此处上传后的图片处理
+                this.arcdata.images.push(url)
+			},
+
+			tj(){
+					console.log(this.arcdata);return;
+				$.post("/admin/create",{data:that.arcdata},function(res){
+					if(res.code==200){
+						layer.msg(res.msg);
+						that.arcdata=[];
+						 window.location.reload()
+					}else{
+						layer.msg('更新失败')
+					}
+				});
+			},
+			
+        }
+        ,
+        created() {
+			   let that=this;
+               //此处为获取后台的分类,有用到的还请自己去修改
+               return
+			   $.get("/gettype",function(res,status){
+					if(status=='success'){
+						that.types=types
+					}else{
+					    layer.msg('获取数据失败')
+					}
+				});
+        },
+		 mounted() {
+			   window.addimg = this.addimg;
+			},
+        
+ })
+
+
+
+    layui.use(['form','upload','layer'], function(){
+        var $ = layui.jquery;
+        var layer = layui.layer;
+         var form = layui.form;
+
+           //监听提交
+  form.on('submit(demo1)', function(data){
+	//console.log(data.field)
+    return false;
+  });
+    });
+</script>
+
+
+<script type="text/javascript" src="lib/crypto1/crypto/crypto.js"></script>
+<script type="text/javascript" src="lib/crypto1/hmac/hmac.js"></script>
+<script type="text/javascript" src="lib/crypto1/sha1/sha1.js"></script>
+<script type="text/javascript" src="lib/base64.js"></script>
+<script type="text/javascript" src="lib/plupload-2.1.2/js/plupload.full.min.js"></script>
+<script type="text/javascript" src="upload.js"></script>
+</html>

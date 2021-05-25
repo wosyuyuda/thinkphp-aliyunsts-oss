@@ -7,14 +7,14 @@ aliyun
 >阿里云的账号
 
 ## 工作流程
->打开public/index.html文件
->调用同目录下的upload.js
->upload.js自动从后端路由/aliyun/getsts index/Getsts方法获取阿里云的sts授权信息
->点击上传按钮,获取图片信息,js自动上传并把上传后的图片信息调用addimg(url)方法
->vue.js加了一个addimg方法绑定到this.addimg到vue的方法,实现把上传后的数据绑定到vue的方法
->再通过vue的for循环把数据显示在前端页面
->前端VUE方法再实现数据的删改(前端删除并不会删除oss上的源文件)
->最后tj方法实现把整个页面的数据传到后端,实现整个流程
+* 打开public/index.html文件
+* 调用同目录下的upload.js
+* upload.js自动从后端路由/aliyun/getsts index/Getsts方法获取阿里云的sts授权信息
+* 点击上传按钮,获取图片信息,js自动上传并把上传后的图片信息调用addimg(url)方法
+* vue.js加了一个addimg方法绑定到this.addimg到vue的方法,实现把上传后的数据绑定到vue的方法
+* 再通过vue的for循环把数据显示在前端页面
+* 前端VUE方法再实现数据的删改(前端删除并不会删除oss上的源文件)
+* 最后tj方法实现把整个页面的数据传到后端,实现整个流程
 
 ## 要改的地方
 
